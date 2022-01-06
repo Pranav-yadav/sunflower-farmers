@@ -17,6 +17,7 @@ import PotatoStatue from "../../abis/PotatoStatue.json";
 import FarmCat from "../../abis/FarmCat.json";
 import FarmDog from "../../abis/FarmDog.json";
 import Gnome from "../../abis/Gnome.json";
+import LedyBug from "../../abis/LedyBug.json";
 
 import pickaxe from "../images/ui/pickaxe.png";
 import woodPickaxe from "../images/ui/wood_pickaxe.png";
@@ -44,6 +45,7 @@ import dog from "../images/ui/dog.png";
 import wheatSeed from "../images/wheat/seed.png";
 import wheat from "../images/wheat/plant.png";
 import flour from "../images/wheat/flour.png";
+import ledybug from "../images/ui/ledybug.gif";
 
 export interface Ingredient {
   name:
@@ -88,6 +90,7 @@ export interface Item {
     | "Farm Dog"
     | "Gnome"
     | "Wheat Seed"
+    | "Pests Eater LedyBug"
     | "Flour";
   description: string;
   address: string;
@@ -472,6 +475,26 @@ export const recipes: Recipe[] = [
     openSeaLink: "https://opensea.io/collection/sunflower-farmers-gnome",
   },
   {
+    name: "Pests Eater LedyBug",
+    abi: LedyBug,
+    description: "This cute ledybug will eat most of the insect pests to keep your crops safe and healthy. Pests Control: Capture field insect pests - 2x rate.",
+    image: ledybug,
+    type: "NFT",
+    address: "NFT-ADDRESS-TBA",//check & verify
+    ingredients: [
+      {
+        name: "$SFF",
+        amount: 10,
+        image: coin,
+      },
+    ],
+    communityMember: {
+      discordName: "127.0.0.1",     
+    },
+	openSeaLink: "https://opensea.io/collection/sunflower-farmers-pests-eater-ledybug",//check & verify
+    supply: 3000,
+  },
+  {
     name: "Wheat Seed",
     description: "Used for planting wheat",
     image: wheatSeed,
@@ -578,5 +601,6 @@ export const DEFAULT_INVENTORY: Inventory = {
   Gnome: 0,
   "Wheat Seed": 0,
   Flour: 0,
+  "Pests Eater LedyBug": 0
 };
 export type ItemName = Item["name"];
