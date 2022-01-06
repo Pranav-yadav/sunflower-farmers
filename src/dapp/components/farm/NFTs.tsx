@@ -5,6 +5,7 @@ import potatoStatue from "../../images/ui/potato_statue.png";
 import farmCat from "../../images/ui/farm_cat.png";
 import gnome from "../../images/ui/gnome.png";
 import dog from "../../images/ui/dog.png";
+import ledybug from "../../images/ui/ledybug.gif";
 import scarecrow from "../../images/ui/scarecrow.png";
 import christmasTree from "../../images/ui/christmas_tree.png";
 import { Inventory } from "../../types/crafting";
@@ -53,6 +54,12 @@ export const NFTs: React.FC<Props> = ({ inventory }) => {
 
       <div id="farm-gnome">
         {inventory["Gnome"] > 0 && <img src={gnome} alt="gnome" />}
+      </div>
+
+      <div id="ledybug">
+        {inventory["Pests Eater LedyBug"] > 0 && (
+          <img src={ledybug} alt="ledybug" />
+        )}
       </div>
 
       <div id="christmas-tree">
