@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { isFarmBlacklisted } from "features/game/actions/onchain";
 import { CONFIG } from "lib/config";
 import { ERRORS } from "lib/errors";
@@ -306,7 +307,7 @@ export const authMachine = createMachine<
               onDone: [
                 {
                   target: "supplyReached",
-                  cond: (context, event) =>
+                  cond: (_context, event) =>
                     Number(event.data.totalSupply) >= 150000,
                 },
                 { target: "noFarmLoaded" },
@@ -518,7 +519,7 @@ export const authMachine = createMachine<
   },
   {
     services: {
-      initMetamask: async (context, event): Promise<void> => {
+      initMetamask: async (_context, _event): Promise<void> => {
         await metamask.initialise();
       },
       loadFarm: async (): Promise<Farm | undefined> => {
@@ -545,7 +546,7 @@ export const authMachine = createMachine<
         };
       },
       createFarm: async (context: Context, event: any): Promise<Context> => {
-        const { charityAddress, donation, captcha } = event as CreateFarmEvent;
+        const { charityAddress, captcha } = event as CreateFarmEvent;
 
         const newFarm = await createFarmAction({
           charity: charityAddress,
@@ -612,7 +613,7 @@ export const authMachine = createMachine<
       deleteFarmIdUrl: deleteFarmUrl,
     },
     guards: {
-      isFresh: (context: Context, event: any) => {
+      isFresh: (_context: Context, event: any) => {
         if (!event.data?.farmId) {
           return false;
         }
