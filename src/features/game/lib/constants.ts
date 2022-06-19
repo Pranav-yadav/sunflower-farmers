@@ -3,6 +3,10 @@ import { fromWei } from "web3-utils";
 import { GameState, Inventory } from "../types/game";
 
 export const GRID_WIDTH_PX = 42;
+export const CHICKEN_TIME_TO_EGG = 1000 * 60 * 60 * 24 * 2; // 48 hours
+export const MUTANT_CHICKEN_BOOST_AMOUNT = 0.1;
+
+export const POPOVER_TIME_MS = 1000;
 
 export const INITIAL_STOCK: Inventory = {
   "Sunflower Seed": new Decimal(400),
@@ -25,6 +29,17 @@ export const INITIAL_STOCK: Inventory = {
   "Pumpkin Soup": new Decimal(1),
   Sauerkraut: new Decimal(1),
   "Roasted Cauliflower": new Decimal(1),
+
+  "Sunflower Cake": new Decimal(1),
+  "Potato Cake": new Decimal(1),
+  "Pumpkin Cake": new Decimal(1),
+  "Carrot Cake": new Decimal(1),
+  "Cabbage Cake": new Decimal(1),
+  "Beetroot Cake": new Decimal(1),
+  "Cauliflower Cake": new Decimal(1),
+  "Parsnip Cake": new Decimal(1),
+  "Radish Cake": new Decimal(1),
+  "Wheat Cake": new Decimal(1),
 };
 
 export const INITIAL_FIELDS: GameState["fields"] = {
@@ -128,25 +143,39 @@ export const INITIAL_FARM: GameState = {
   inventory: {
     Sunflower: new Decimal(5),
     Potato: new Decimal(12),
-    Scarecrow: new Decimal(4),
     "Roasted Cauliflower": new Decimal(1),
-    Sauerkraut: new Decimal(1),
   },
   stock: INITIAL_STOCK,
   trees: INITIAL_TREES,
   stones: INITIAL_STONE,
   iron: INITIAL_IRON,
   gold: INITIAL_GOLD,
+  chickens: {},
   skills: {
     farming: new Decimal(0),
     gathering: new Decimal(0),
+  },
+  stockExpiry: {
+    "Sunflower Cake": "2022-06-06",
+    "Potato Cake": "1970-01-01T00:00:00.000Z",
+    "Pumpkin Cake": "1970-01-01T00:00:00.000Z",
+    "Carrot Cake": "1970-01-01T00:00:00.000Z",
+    "Cabbage Cake": "1970-01-01T00:00:00.000Z",
+    "Beetroot Cake": "1970-01-01T00:00:00.000Z",
+    "Cauliflower Cake": "1970-01-01T00:00:00.000Z",
+    "Parsnip Cake": "1970-01-01T00:00:00.000Z",
+    "Radish Cake": "1970-01-01T00:00:00.000Z",
+    "Wheat Cake": "1970-01-01T00:00:00.000Z",
   },
 };
 
 export const EMPTY: GameState = {
   balance: new Decimal(fromWei("0")),
   fields: {},
-  inventory: {},
+  inventory: {
+    "Chicken Coop": new Decimal(1),
+  },
+  chickens: {},
   stock: {},
   trees: INITIAL_TREES,
   stones: INITIAL_STONE,
@@ -156,4 +185,5 @@ export const EMPTY: GameState = {
     farming: new Decimal(0),
     gathering: new Decimal(0),
   },
+  stockExpiry: {},
 };

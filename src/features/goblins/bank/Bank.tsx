@@ -14,7 +14,10 @@ export const Bank: React.FC = () => {
 
   const openBank = () => {
     setIsOpen(true);
-    bankAudio.play();
+    //Checks if bankAudio is playing, if false, plays the sound
+    if (!bankAudio.playing()) {
+      bankAudio.play();
+    }
   };
 
   return (
@@ -29,7 +32,7 @@ export const Bank: React.FC = () => {
       <div className="cursor-pointer hover:img-highlight">
         <img src={bank} alt="bank" onClick={openBank} className="w-full" />
         <Action
-          className="absolute -bottom-6 left-3"
+          className="absolute -bottom-6 left-5"
           text="Bank"
           icon={token}
           onClick={openBank}

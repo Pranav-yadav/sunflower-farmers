@@ -18,7 +18,6 @@ import humanDeath from "assets/npcs/human_death.gif";
 import { ERRORS } from "lib/errors";
 import { beggarAudio } from "lib/utils/sfx";
 import { Context } from "features/game/GameProvider";
-import { shortAddress } from "../hud/components/Address";
 
 type DonateEvent = {
   type: "DONATE";
@@ -127,15 +126,14 @@ export const TeamDonation: React.FC = () => {
   const beggarClick = () => {
     setDonation(1);
     send("BEGGER_CLICK");
-    beggarAudio.play();
+    //Checks if beggarAudio is playing, if false, plays the sound
+    if (!beggarAudio.playing()) {
+      beggarAudio.play();
+    }
   };
 
   const donate = () => {
-    if (gameState.matches("readonly")) {
-      send("DONATE", { donation, to: gameState.context.owner });
-    } else {
-      send("DONATE", { donation });
-    }
+    send("DONATE", { donation });
   };
 
   return (
@@ -159,7 +157,7 @@ export const TeamDonation: React.FC = () => {
         <img
           id="begger"
           src={begger}
-          className="absolute hover:cursor-pointer hover:img-highlight z-10"
+          className="absolute hover:cursor-pointer hover:img-highlight z-20"
           style={{
             width: `${GRID_WIDTH_PX * 1.8}px`,
           }}
@@ -169,7 +167,7 @@ export const TeamDonation: React.FC = () => {
         <img
           id="rich_begger"
           src={richBegger}
-          className="absolute hover:cursor-pointer hover:img-highlight z-10"
+          className="absolute hover:cursor-pointer hover:img-highlight z-20"
           style={{
             width: `${GRID_WIDTH_PX * 1.8}px`,
           }}
@@ -184,43 +182,25 @@ export const TeamDonation: React.FC = () => {
         <Panel>
           {state.matches("begging") && (
             <div className="flex flex-col items-center mb-1">
-              {gameState.matches("readonly") ? (
-                <div className="flex flex-col text-shadow items-center">
-                  <h2 className="text-sm sm:text-base mb-1 text-center pb-1">
-                    Buy farm #{gameState.context.state.id} owner a coffee!
-                  </h2>
-
-                  <p className="sm:text-sm mb-3 text-center">
-                    {shortAddress(gameState.context.owner as string)}
-                  </p>
-                </div>
-              ) : (
-                <>
-                  <img
-                    src={team}
-                    alt="sunflower token"
-                    className="w-full mb-3"
-                  />
-                  <div className="flex flex-col text-shadow items-center">
-                    <h2 className="text-sm sm:text-base mb-2 text-center pb-2">
-                      Buy the team a coffee!
-                    </h2>
-                    <p className="sm:text-sm mb-3 text-center">
-                      Sunflower Land is run by a small group of passionate
-                      developers who are 100% sleep deprived.
-                    </p>
-                    <p className="sm:text-sm mb-3 text-center">
-                      {`You can send us a donation of Matic with which we can drink
+              <img src={team} alt="sunflower token" className="w-full mb-3" />
+              <div className="flex flex-col text-shadow items-center">
+                <h2 className="text-sm sm:text-base mb-2 text-center pb-2">
+                  Buy the team a coffee!
+                </h2>
+                <p className="sm:text-sm mb-3 text-center">
+                  Sunflower Land is run by a small group of passionate
+                  developers who are 100% sleep deprived.
+                </p>
+                <p className="sm:text-sm mb-3 text-center">
+                  {`You can send us a donation of Matic with which we can drink
                 more coffee and stay awake longer pumping out awesome new
                 features`}
-                    </p>
+                </p>
 
-                    <p className="sm:text-sm  mb-3 text-center">
-                      Every little bit counts!
-                    </p>
-                  </div>
-                </>
-              )}
+                <p className="sm:text-sm  mb-3 text-center">
+                  Every little bit counts!
+                </p>
+              </div>
               <div className="relative">
                 <input
                   type="number"

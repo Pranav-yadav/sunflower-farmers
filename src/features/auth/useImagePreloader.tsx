@@ -6,9 +6,25 @@ import lightningDeath from "assets/npcs/human_death.gif";
 import minting from "assets/npcs/minting.gif";
 import richBegger from "assets/npcs/rich_begger.gif";
 import syncing from "assets/npcs/syncing.gif";
+import goblinBlacksmith from "assets/buildings/goblin_blacksmith.gif";
+import goblinTailor from "assets/buildings/goblin_tailor.png";
+import goblinBank from "assets/buildings/goblin_bank.gif";
 import background from "assets/land/background.png";
 import goblinLandBackground from "assets/land/goblin_background.png";
+import waterBackground from "assets/land/water-background.png";
 import farm from "assets/brand/nft.png";
+import secure from "assets/npcs/synced.gif";
+import brokenRocket from "assets/mom/mom_broken_rocket.gif";
+import hungryChicken from "assets/animals/chickens/hungry.gif";
+import happyChicken from "assets/animals/chickens/happy.gif";
+import walkingChicken from "assets/animals/chickens/walking.gif";
+import sleepingChicken from "assets/animals/chickens/sleeping.gif";
+import layingEggSheet from "assets/animals/chickens/laying-egg-sheet.png";
+import egg from "assets/resources/egg.png";
+import richChicken from "assets/animals/chickens/rich_chicken.png";
+import fatChicken from "assets/animals/chickens/fat_chicken.png";
+import speedChicken from "assets/animals/chickens/speed_chicken.png";
+import levelOne from "assets/land/levels/1.png";
 
 const IMAGE_LIST: string[] = [
   goblinDonation,
@@ -20,6 +36,22 @@ const IMAGE_LIST: string[] = [
   background,
   goblinLandBackground,
   farm,
+  goblinBlacksmith,
+  goblinTailor,
+  goblinBank,
+  secure,
+  brokenRocket,
+  hungryChicken,
+  happyChicken,
+  walkingChicken,
+  sleepingChicken,
+  layingEggSheet,
+  egg,
+  richChicken,
+  fatChicken,
+  speedChicken,
+  waterBackground,
+  levelOne,
 ];
 
 function preloadImage(src: string) {

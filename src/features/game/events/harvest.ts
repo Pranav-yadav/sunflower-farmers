@@ -2,6 +2,11 @@ import { GameState, Inventory } from "../types/game";
 import { CROPS } from "../types/crops";
 import Decimal from "decimal.js-light";
 import { screenTracker } from "lib/utils/screen";
+import {
+  addToHarvestCount,
+  getGoblinCount,
+  getHarvestCount,
+} from "../lib/goblinShovelStorage";
 
 export type HarvestAction = {
   type: "item.harvested";
@@ -16,6 +21,10 @@ type Options = {
 
 export function harvest({ state, action, createdAt = Date.now() }: Options) {
   const fields = { ...state.fields };
+
+  if (isShovelStolen()) {
+    throw new Error("Missing shovel!");
+  }
 
   if (action.index < 0) {
     throw new Error("Field does not exist");
@@ -79,9 +88,16 @@ export function harvest({ state, action, createdAt = Date.now() }: Options) {
     [field.name]: cropCount.add(multiplier),
   };
 
+  addToHarvestCount(1);
+
   return {
     ...state,
     fields: newFields,
     inventory,
   } as GameState;
 }
+
+export const isShovelStolen = () => {
+  const goblinThreshold = getGoblinCount().add(1).pow(3).mul(57);
+  return getHarvestCount().greaterThanOrEqualTo(goblinThreshold);
+};

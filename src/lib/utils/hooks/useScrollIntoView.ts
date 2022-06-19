@@ -26,6 +26,18 @@ export enum Section {
   Tent = "tent",
   Bath = "bath",
   "Easter Bunny" = "easter-bunny",
+  Observatory = "observatory",
+  "Mysterious Head" = "mysterious-head",
+  "Golden Bonsai" = "golden-bonsai",
+  Mole = "mole",
+  "Rock Golem" = "rock-golem",
+  "Speed Chicken" = "speed-chicken",
+  "Rich Chicken" = "rich-chicken",
+  "Fat Chicken" = "fat-chicken",
+  "Rooster" = "rooster",
+
+  // Land
+  GenesisBlock = "genesisBlock",
 }
 
 export const useScrollIntoView = () => {

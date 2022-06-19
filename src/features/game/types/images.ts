@@ -48,11 +48,23 @@ import apprenticeBeaver from "assets/nfts/apprentice_beaver.gif";
 import constructionBeaver from "assets/nfts/construction_beaver.gif";
 import mysteriousParsnip from "assets/nfts/mysterious_parsnip.png";
 import carrotSword from "assets/nfts/carrot_sword.png";
+import goldenBonsai from "assets/nfts/golden_bonsai.png";
 import nancy from "assets/nfts/nancy.png";
 import kuebiko from "assets/nfts/kuebiko.gif";
 import nyonStatue from "assets/nfts/nyon_statue.png";
 import homelessTent from "assets/nfts/homeless_tent.png";
 import farmerBath from "assets/nfts/farmer_bath.png";
+import mysteriousHead from "assets/nfts/mysterious_head.png";
+import tunnelMole from "assets/nfts/tunnel_mole.gif";
+import rockyMole from "assets/nfts/rocky_mole.gif";
+import nugget from "assets/nfts/nugget.gif";
+import rockGolem from "assets/nfts/rock_golem.gif";
+import rooster from "assets/nfts/rooster.gif";
+
+// Mutant Chickens
+import speedChicken from "assets/animals/chickens/speed_chicken.gif";
+import fatChicken from "assets/animals/chickens/fat_chicken.gif";
+import richChicken from "assets/animals/chickens/rich_chicken.gif";
 
 // Foods
 import pumpkinSoup from "assets/nfts/pumpkin_soup.png";
@@ -138,16 +150,40 @@ import pinkEgg from "src/assets/nfts/easter/pink_egg.png";
 import easterBasket from "src/assets/nfts/easter/basket.png";
 import easterBunny from "src/assets/nfts/easter/easter_bunny.gif";
 
+//MOM Event
+import momCoreEngine from "src/assets/nfts/mom/engine_core.png";
+import observatory from "src/assets/nfts/mom/observatory.gif";
+
+// Cakes
+import carrotCake from "src/assets/nfts/cakes/carrot_cake.png";
+import radishCake from "src/assets/nfts/cakes/radish_cake.png";
+// import beetrootCake from "src/assets/nfts/cakes/beetroot_cake.png";
+// import cabbageCake from "src/assets/nfts/cakes/cabbage_cake.png";
+// import cauliflowerCake from "src/assets/nfts/cakes/cauliflower_cake.png";
+// import parsnipCake from "src/assets/nfts/cakes/parsnip_cake.png";
+// import potatoCake from "src/assets/nfts/cakes/potato_cake.png";
+// import pumpkinCake from "src/assets/nfts/cakes/pumpkin_cake.png";
+// import sunflowerCake from "src/assets/nfts/cakes/sunflower_cake.png";
+// import wheatCake from "src/assets/nfts/cakes/wheat_cake.png";
+
+import goblinKey from "src/assets/nfts/quest/goblin_key.png";
+import sunflowerKey from "src/assets/nfts/quest/sunflower_key.png";
+import ancientGoblinSword from "src/assets/nfts/quest/ancient_goblin_sword.png";
+import ancientHumanWarhammer from "src/assets/nfts/quest/ancient_human_warhammer.png";
+
 import { InventoryItemName } from "./game";
 import {
   FOODS,
+  CAKES,
   TOOLS,
   FLAGS,
   BLACKSMITH_ITEMS,
   MARKET_ITEMS,
   BARN_ITEMS,
+  ROCKET_ITEMS,
   CRAFTABLES,
   LimitedItem,
+  MUTANT_CHICKENS,
 } from "./craftables";
 import { CROPS, SEEDS } from "./crops";
 import { RESOURCES } from "./resources";
@@ -410,6 +446,10 @@ export const ITEM_DETAILS: Items = {
     ...MARKET_ITEMS["Carrot Sword"],
     image: carrotSword,
   },
+  "Golden Bonsai": {
+    ...MARKET_ITEMS["Golden Bonsai"],
+    image: goldenBonsai,
+  },
   "Nyon Statue": {
     ...BLACKSMITH_ITEMS["Nyon Statue"],
     image: nyonStatue,
@@ -421,6 +461,30 @@ export const ITEM_DETAILS: Items = {
   "Farmer Bath": {
     ...BLACKSMITH_ITEMS["Farmer Bath"],
     image: farmerBath,
+  },
+  "Mysterious Head": {
+    ...BLACKSMITH_ITEMS["Mysterious Head"],
+    image: mysteriousHead,
+  },
+  "Tunnel Mole": {
+    ...BLACKSMITH_ITEMS["Tunnel Mole"],
+    image: tunnelMole,
+  },
+  "Rocky the Mole": {
+    ...BLACKSMITH_ITEMS["Rocky the Mole"],
+    image: rockyMole,
+  },
+  Nugget: {
+    ...BLACKSMITH_ITEMS["Nugget"],
+    image: nugget,
+  },
+  "Rock Golem": {
+    ...BLACKSMITH_ITEMS["Rock Golem"],
+    image: rockGolem,
+  },
+  Rooster: {
+    ...BARN_ITEMS["Rooster"],
+    image: rooster,
   },
 
   // FOOD
@@ -440,6 +504,48 @@ export const ITEM_DETAILS: Items = {
   "Radish Pie": {
     ...FOODS()["Radish Pie"],
     image: radishPie,
+  },
+
+  // Cakes
+  "Beetroot Cake": {
+    ...CAKES()["Beetroot Cake"],
+    image: questionMark,
+  },
+  "Cabbage Cake": {
+    ...CAKES()["Cabbage Cake"],
+    image: questionMark,
+  },
+  "Carrot Cake": {
+    ...CAKES()["Carrot Cake"],
+    image: carrotCake,
+  },
+  "Cauliflower Cake": {
+    ...CAKES()["Cauliflower Cake"],
+    image: questionMark,
+  },
+  "Parsnip Cake": {
+    ...CAKES()["Parsnip Cake"],
+    image: questionMark,
+  },
+  "Potato Cake": {
+    ...CAKES()["Potato Cake"],
+    image: questionMark,
+  },
+  "Pumpkin Cake": {
+    ...CAKES()["Pumpkin Cake"],
+    image: questionMark,
+  },
+  "Radish Cake": {
+    ...CAKES()["Radish Cake"],
+    image: radishCake,
+  },
+  "Sunflower Cake": {
+    ...CAKES()["Sunflower Cake"],
+    image: questionMark,
+  },
+  "Wheat Cake": {
+    ...CAKES()["Wheat Cake"],
+    image: questionMark,
   },
 
   /**
@@ -702,4 +808,39 @@ export const ITEM_DETAILS: Items = {
     description: "A purple easter egg",
     image: purpleEgg,
   },
+
+  "Engine Core": {
+    description: "The power of the sunflower",
+    image: momCoreEngine,
+  },
+  Observatory: {
+    ...ROCKET_ITEMS["Observatory"],
+    description: "Reach the stars and increase XP",
+    image: observatory,
+  },
+  "Goblin Key": {
+    description: "The Goblin Key",
+    image: goblinKey,
+  },
+  "Sunflower Key": {
+    description: "The Sunflower Key",
+    image: sunflowerKey,
+  },
+  "Ancient Goblin Sword": {
+    description: "An Ancient Goblin Sword",
+    image: ancientGoblinSword,
+  },
+  "Ancient Human Warhammer": {
+    description: "An Ancient Human Warhammer",
+    image: ancientHumanWarhammer,
+  },
+  "Speed Chicken": {
+    ...MUTANT_CHICKENS["Speed Chicken"],
+    image: speedChicken,
+  },
+  "Fat Chicken": {
+    ...MUTANT_CHICKENS["Fat Chicken"],
+    image: fatChicken,
+  },
+  "Rich Chicken": { ...MUTANT_CHICKENS["Rich Chicken"], image: richChicken },
 };

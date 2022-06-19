@@ -13,6 +13,7 @@ import stone from "assets/resources/stone.png";
 
 import { GRID_WIDTH_PX } from "features/game/lib/constants";
 import { Context } from "features/game/GameProvider";
+import { ToastContext } from "features/game/toast/ToastQueueProvider";
 import classNames from "classnames";
 import { useActor } from "@xstate/react";
 
@@ -50,11 +51,11 @@ export const Stone: React.FC<Props> = ({ rockIndex }) => {
 
   const [showRockTimeLeft, setShowRockTimeLeft] = useState(false);
 
-  const readonly = gameState.matches("readonly");
   const tool = "Pickaxe";
   const rock = game.context.state.stones[rockIndex];
   // Users will need to refresh to chop the tree again
   const mined = !canMine(rock);
+  const { setToast } = useContext(ToastContext);
 
   // Reset the shake count when clicking outside of the component
   useEffect(() => {
@@ -93,12 +94,6 @@ export const Stone: React.FC<Props> = ({ rockIndex }) => {
   const shake = () => {
     const isPlaying = sparkGif.current?.getInfo("isPlaying");
 
-    if (readonly) {
-      miningAudio.play();
-      sparkGif.current?.goToAndPlay(0);
-      return;
-    }
-
     const pickaxeAmount =
       game.context.state.inventory.Pickaxe || new Decimal(0);
     if (pickaxeAmount.lessThanOrEqualTo(0)) return;
@@ -136,6 +131,11 @@ export const Stone: React.FC<Props> = ({ rockIndex }) => {
         </div>
       );
 
+      setToast({
+        icon: stone,
+        content: `+${rock.amount}`,
+      });
+
       await new Promise((res) => setTimeout(res, 2000));
       setCollecting(false);
     } catch (e: any) {
@@ -146,10 +146,7 @@ export const Stone: React.FC<Props> = ({ rockIndex }) => {
   };
 
   const handleHover = () => {
-    if (
-      readonly ||
-      (selectedItem === tool && game.context.state.inventory[tool]?.gte(1))
-    )
+    if (selectedItem === tool && game.context.state.inventory[tool]?.gte(1))
       return;
 
     containerRef.current?.classList["add"]("cursor-not-allowed");
@@ -157,10 +154,7 @@ export const Stone: React.FC<Props> = ({ rockIndex }) => {
   };
 
   const handleMouseLeave = () => {
-    if (
-      readonly ||
-      (selectedItem === tool && game.context.state.inventory[tool]?.gte(1))
-    )
+    if (selectedItem === tool && game.context.state.inventory[tool]?.gte(1))
       return;
     containerRef.current?.classList["remove"]("cursor-not-allowed");
     setShowLabel(false);

@@ -15,7 +15,11 @@ The goal of this project is to create a decentralized and community driven MetaV
 
 This repo includes the front-end game in which users can play and interact with the game on the Polygon Network and off chain data.
 
-Looking to help out? Read our contributing Guidelines - https://github.com/sunflower-land/sunflower-land/blob/main/docs/CONTRIBUTING.md
+Looking to help out? Read our contributing docs - https://github.com/sunflower-land/sunflower-land/blob/main/docs/CONTRIBUTING.md
+
+By contributing you agree to our terms and services - https://docs.sunflower-land.com/support/terms-of-service
+
+
 
 # Website | Official Links
 
@@ -27,7 +31,7 @@ Looking to help out? Read our contributing Guidelines - https://github.com/sunfl
 
 [https://sunflower-land.com/play](https://sunflower-land.com/play)
 
-### 😕 Stuck somwhere ?
+### 😕 Stuck somewhere ?
 
 Read the official docs/ litepaper here: [docs.sunflower-land.com](https://docs.sunflower-land.com/)
 
@@ -41,13 +45,18 @@ First Read the FAQ's here: [FAQ's](https://sunflowerland.freshdesk.com/support/s
 
 Still not satisfied? Submit a support ticket here: [Submit a ticket](https://sunflowerland.freshdesk.com/support/tickets/new)
 
+### ‼️ Have a suggestion/proposal/cool idea ?
+
+Please add a new idea for the community to vote on, here: [SFL Idea Portal](https://sunflower-land.ideas.aha.io/)
+
 # 👶 Getting Started
 
 Firstly, you will need to clone the repo locally. Once you have it ready navigate into the directory and run the following commands:
 
 1. `npm install --global yarn` (if you don't have yarn installed)
 2. `yarn install`
-3. `yarn dev`
+3. `cp .env.sample .env`
+4. `yarn dev`
 
 # 🧪 Testing
 
@@ -101,3 +110,5 @@ Tailwind is our CSS tool of choice. It enables us to:
 The previous version was used in unethically on other Blockchains. The team is working on deciding the licence that will best suit our community. Until then, the code falls under No Licence and cannot be reused.
 
 All media assets (images and music) are not available for use in commercial or private projects.
+
+If you plan on using the repo's assets you must seek permission from the Intellectual property or licence holder. For artists wishing to extend the base asset pack, you must download the SunnySide asset pack listed in the Art contributing docs.

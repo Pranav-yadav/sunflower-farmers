@@ -6,7 +6,9 @@ In this guide you will get an overview of the contribution workflow from opening
 
 ## New contributor guide
 
-To get an overview of the project, read the [README](../README.md). Here are some resources to help you get started with open source contributions:
+To get an overview of the project, please read the [README](../README.md).
+
+Here are some resources to help you get started with open source contributions:
 
 ### Disclaimer
 
@@ -38,6 +40,43 @@ Don't have any ideas? We would suggest scanning the open issues and seeing if th
 
 You can search by labels as well to see which items are more urgent than others.
 
+## What should I work on?
+
+Maintaining a project with over 50 open source developers brings a range of challenges:
+
+- Maintaining a consistent vision
+- Ensuring best architecture practices
+- Security concerns and vulnerabilities
+- Automated and manual testing
+- Readability and maintainability
+- Managing expectations, deadlines and contributors leaving the project
+- Tokenomics design
+- Anything that gets added to the project is more code that needs to be maintained by Thought Farm.
+
+While we appreciate UI and gameplay PRs, we need these pieces of work to fit into the core team's development workflow to ensure work is pair programmed, has sufficient automated testing, is understood by the team, is peer reviewed, aligns with the tokenomics of the game and adheres with the vision of the project.
+
+Due to the limited time resources of the team, at this point of time, we cannot accept any PRs that introduce major gameplay changes or UI workflows.
+
+If you have an idea that introduces new UI workflows or gameplay, the best way forward is to first raise the idea for community and if consensus is met, it will get added to the roadmap. Once an item is on the roadmap, the core functionality will be developed by Thought Farm with the support from certified developers and and the community. For new gameplay and UI workflows there will be plenty of tasks that can be worked on by community members.
+
+**Examples of what can be worked on independently**
+
+- Bug fixes
+- Decorations
+- Minor UI enhancements - Typos, buttons, alignment, colours
+- CI & Build improvements
+- Writing tests
+- Animations + game polish
+
+**Examples of what the core team will need to be involved in**
+
+- New game features
+- Major UI & UX workflows
+- Architecture changes (state management, data storage, routers etc.)
+- Smart contracts & APIs
+- Testing infrastructure
+- Repo tooling (testing, components, build)
+
 ### Make Changes
 
 #### Make changes locally
@@ -53,7 +92,7 @@ You can search by labels as well to see which items are more urgent than others.
 Commit the changes once you are happy with them. We prefer atomic commits that are easily revertable.
 
 > **TIP:** If your changes include **only** documentation updates/additions/deletions,
-> make sure that you add below line to your commit message while commiting:
+> make sure that you add below line to your commit message while committing:
 >
 > **`[skip ci]`**
 >
@@ -80,7 +119,7 @@ When you're finished with the changes, create a pull request, also known as a PR
 
 You will want to prefix the name of your PR with the category it falls under:
 
-- [FEAT] Feature or enhancment
+- [FEAT] Feature or enhancement
 - [CHORE] Admin type work (scripts, documentation etc)
 - [FIX] A bug fix
 

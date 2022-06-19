@@ -9,10 +9,6 @@ import { login, Token, decodeToken, removeSession } from "../actions/login";
 import { oauthorise, redirectOAuth } from "../actions/oauth";
 import { CharityAddress } from "../components/CreateFarm";
 
-// Hashed eth 0 value
-const INITIAL_SESSION =
-  "0x0000000000000000000000000000000000000000000000000000000000000000";
-
 const getFarmIdFromUrl = () => {
   const paths = window.location.href.split("/visit/");
   const id = paths[paths.length - 1];
@@ -30,7 +26,6 @@ const deleteFarmUrl = () =>
 
 type Farm = {
   farmId: number;
-  sessionId: string;
   address: string;
   createdAt: number;
   isBlacklisted: boolean;
@@ -39,7 +34,6 @@ type Farm = {
 export interface Context {
   errorCode?: keyof typeof ERRORS;
   farmId?: number;
-  sessionId?: string;
   hash?: string;
   address?: string;
   token?: Token;
@@ -48,8 +42,11 @@ export interface Context {
   isBlacklisted?: boolean;
 }
 
+export type Screen = "land" | "farm";
+
 type StartEvent = Farm & {
   type: "START_GAME";
+  screen: Screen;
 };
 
 type ExploreEvent = {
@@ -95,6 +92,9 @@ export type BlockchainEvent =
   | {
       type: "LOGOUT";
     }
+  | {
+      type: "CHOOSE_CHARITY";
+    }
   | { type: "CONNECT_TO_DISCORD" }
   | { type: "CONFIRM" }
   | { type: "CONTINUE" };
@@ -117,9 +117,11 @@ export type BlockchainState = {
     | { connected: "creatingFarm" }
     | { connected: "countdown" }
     | { connected: "readyToStart" }
-    | { connected: "oauthorised" }
+    | { connected: "donating" }
     | { connected: "authorised" }
+    | { connected: "landExpansion" }
     | { connected: "blacklisted" }
+    | { connected: "visitingContributor" }
     | "exploring"
     | "checkFarm"
     | "unauthorised";
@@ -142,7 +144,7 @@ export const authMachine = createMachine<
 >(
   {
     id: "authMachine",
-    initial: API_URL ? "connecting" : "visiting",
+    initial: API_URL ? "connecting" : "connected",
     context: {},
     states: {
       connecting: {
@@ -150,18 +152,11 @@ export const authMachine = createMachine<
         invoke: {
           src: "initMetamask",
           onDone: [
-            // {
-            //   target: "minimised",
-            //   cond: () => !(window.screenTop === 0 && window.screenY === 0),
-            // },
             {
               target: "checkFarm",
               cond: "isVisitingUrl",
             },
-            {
-              target: "oauthorising",
-              cond: "hasDiscordCode",
-            },
+
             { target: "signing" },
           ],
           onError: {
@@ -179,10 +174,16 @@ export const authMachine = createMachine<
       signing: {
         invoke: {
           src: "login",
-          onDone: {
-            target: "connected",
-            actions: "assignToken",
-          },
+          onDone: [
+            {
+              target: "oauthorising",
+              cond: "hasDiscordCode",
+            },
+            {
+              target: "connected",
+              actions: "assignToken",
+            },
+          ],
           onError: {
             target: "unauthorised",
             actions: "assignErrorMessage",
@@ -199,7 +200,7 @@ export const authMachine = createMachine<
         invoke: {
           src: "oauthorise",
           onDone: {
-            target: "connected.oauthorised",
+            target: "connected.loadingFarm",
             actions: "assignToken",
           },
           onError: {
@@ -215,7 +216,7 @@ export const authMachine = createMachine<
         },
       },
       connected: {
-        initial: "loadingFarm",
+        initial: API_URL ? "loadingFarm" : "authorised",
         states: {
           loadingFarm: {
             id: "loadingFarm",
@@ -231,12 +232,28 @@ export const authMachine = createMachine<
                   actions: "assignFarm",
                   cond: "hasFarm",
                 },
+
                 { target: "checkingAccess" },
               ],
               onError: {
                 target: "#unauthorised",
                 actions: "assignErrorMessage",
               },
+            },
+          },
+          visitingContributor: {
+            on: {
+              RETURN: [
+                // When returning to this state the original authorised player's data exists in the authMachine context
+                {
+                  target: "authorised",
+                  actions: (context) => {
+                    window.location.href = `${window.location.pathname}#/farm/${context.farmId}`;
+                  },
+                  cond: "hasFarm",
+                },
+                { target: "readyToStart" },
+              ],
             },
           },
           checkingAccess: {
@@ -274,8 +291,7 @@ export const authMachine = createMachine<
                 {
                   target: "supplyReached",
                   cond: (context, event) =>
-                    Number(event.data.totalSupply) >= 100000 &&
-                    !context.token?.userAccess?.createFarm,
+                    Number(event.data.totalSupply) >= 150000,
                 },
                 { target: "noFarmLoaded" },
               ],
@@ -285,7 +301,7 @@ export const authMachine = createMachine<
               },
             },
           },
-          oauthorised: {
+          donating: {
             on: {
               CREATE_FARM: {
                 target: "creatingFarm",
@@ -316,8 +332,8 @@ export const authMachine = createMachine<
           },
           noFarmLoaded: {
             on: {
-              CREATE_FARM: {
-                target: "oauthorised",
+              CHOOSE_CHARITY: {
+                target: "donating",
               },
               CONNECT_TO_DISCORD: {
                 // Redirects to Discord OAuth so no need for a state change
@@ -356,8 +372,11 @@ export const authMachine = createMachine<
             },
           },
           authorised: {
-            entry: (context) => {
-              window.location.href = `${window.location.pathname}#/farm/${context.farmId}`;
+            id: "authorised",
+            entry: (context, event) => {
+              const { screen } = event as StartEvent;
+
+              window.location.href = `${window.location.pathname}#/${screen}/${context.farmId}`;
             },
             on: {
               REFRESH: {
@@ -365,6 +384,9 @@ export const authMachine = createMachine<
               },
               EXPLORE: {
                 target: "#exploring",
+              },
+              VISIT: {
+                target: "visitingContributor",
               },
               LOGOUT: {
                 target: "#connecting",
@@ -468,16 +490,15 @@ export const authMachine = createMachine<
   },
   {
     services: {
-      initMetamask: async (): Promise<void> => {
+      initMetamask: async (context, event): Promise<void> => {
         await metamask.initialise();
       },
       loadFarm: async (): Promise<Farm | undefined> => {
-        console.log("Load farms");
         const farmAccounts = await metamask.getFarm()?.getFarms();
+
         if (farmAccounts?.length === 0) {
           return;
         }
-        console.log("Loaded");
 
         const createdAt = await metamask
           .getBeta()
@@ -486,16 +507,11 @@ export const authMachine = createMachine<
         // V1 just support 1 farm per account - in future let them choose between the NFTs they hold
         const farmAccount = farmAccounts[0];
 
-        const sessionId = await metamask
-          .getSessionManager()
-          .getSessionId(farmAccount.tokenId);
-
         const isBlacklisted = await isFarmBlacklisted(farmAccount.tokenId);
 
         return {
           farmId: farmAccount.tokenId,
           address: farmAccount.account,
-          sessionId,
           createdAt,
           isBlacklisted,
         };
@@ -505,7 +521,6 @@ export const authMachine = createMachine<
 
         const newFarm = await createFarmAction({
           charity: charityAddress,
-          donation,
           token: context.rawToken as string,
           captcha: captcha,
         });
@@ -513,7 +528,6 @@ export const authMachine = createMachine<
         return {
           farmId: newFarm.tokenId,
           address: newFarm.account,
-          sessionId: INITIAL_SESSION,
         };
       },
       login: async (): Promise<{ token: string }> => {
@@ -542,7 +556,6 @@ export const authMachine = createMachine<
         return {
           farmId: farmAccount.tokenId,
           address: farmAccount.account,
-          sessionId: "",
           createdAt: 0,
           isBlacklisted,
         };
@@ -552,7 +565,6 @@ export const authMachine = createMachine<
       assignFarm: assign<Context, any>({
         farmId: (_context, event) => event.data.farmId,
         address: (_context, event) => event.data.address,
-        sessionId: (_context, event) => event.data.sessionId,
         isBlacklisted: (_context, event) => event.data.isBlacklisted,
       }),
       assignToken: assign<Context, any>({
@@ -565,11 +577,10 @@ export const authMachine = createMachine<
       resetFarm: assign<Context, any>({
         farmId: () => undefined,
         address: () => undefined,
-        sessionId: () => undefined,
         token: () => undefined,
         rawToken: () => undefined,
       }),
-      clearSession: (context) => removeSession(metamask.myAccount as string),
+      clearSession: () => removeSession(metamask.myAccount as string),
       deleteFarmIdUrl: deleteFarmUrl,
     },
     guards: {

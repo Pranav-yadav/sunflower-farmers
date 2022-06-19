@@ -26,7 +26,7 @@ import { Blacklisted } from "features/game/components/Blacklisted";
 
 export const Auth: React.FC = () => {
   const { authService } = useContext(AuthProvider.Context);
-  const [authState, send] = useActor(authService);
+  const [authState] = useActor(authService);
 
   // TODO - refine full screens system
   // useEffect(() => {
@@ -57,6 +57,8 @@ export const Auth: React.FC = () => {
       centered
       show={
         !authState.matches({ connected: "authorised" }) &&
+        !authState.matches({ connected: "landExpansion" }) &&
+        !authState.matches({ connected: "visitingContributor" }) &&
         !authState.matches("visiting")
       }
       backdrop={false}
@@ -80,7 +82,7 @@ export const Auth: React.FC = () => {
             <SupplyReached />
           )}
           {authState.matches("oauthorising") && <Loading />}
-          {authState.matches({ connected: "oauthorised" }) && <CreateFarm />}
+          {authState.matches({ connected: "donating" }) && <CreateFarm />}
           {authState.matches({ connected: "countdown" }) && <Countdown />}
           {authState.matches({ connected: "creatingFarm" }) && <CreatingFarm />}
           {authState.matches({ connected: "readyToStart" }) && <StartFarm />}

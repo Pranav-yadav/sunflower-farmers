@@ -2,6 +2,8 @@
   "name": "sunflower-land",
   "version": "0.0.0",
   "author": "developer@sunflower-land.com",
+  "license": "UNLICENSED",
+  "private": true,
   "scripts": {
     "dev": "set NODE_ENV=development && vite --port 3000 --host",
     "build": "tsc && vite build",
@@ -10,7 +12,7 @@
     "preview": "vite preview",
     "generate": "graphql-codegen",
     "test": "jest",
-    "erc1155": "ts-node --project _scripts/node.tsconfig.json _scripts/erc1155Metadata.ts ",
+    "erc1155": "ts-node --project _scripts/node.tsconfig.json _scripts/erc1155Metadata.ts",
     "prepare": "husky install"
   },
   "browserslist": [
@@ -20,17 +22,20 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@types/lodash.debounce": "^4.0.7",
     "@types/lodash.shuffle": "^4.2.6",
     "@xstate/inspect": "^0.6.2",
     "@xstate/react": "^1.6.3",
     "browserify-zlib": "^0.2.0",
     "classnames": "^2.3.1",
+    "clipboard": "^2.0.11",
     "decimal.js-light": "^2.5.1",
     "events": "^3.3.0",
     "graphql": "^16.2.0",
     "howler": "^2.2.3",
     "html2canvas": "^1.4.1",
     "jwt-decode": "^3.1.2",
+    "lodash.debounce": "^4.0.8",
     "lodash.shuffle": "^4.2.0",
     "process": "^0.11.10",
     "react": "^17.0.2",

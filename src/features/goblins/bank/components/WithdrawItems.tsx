@@ -140,15 +140,19 @@ export const WithdrawItems: React.FC<Props> = ({ onWithdraw }) => {
         <div className="flex flex-wrap h-fit -ml-1.5">
           {inventoryItems.map((itemName) => {
             const details = makeItemDetails(itemName);
+
             const withdrawable = canWithdraw({
               item: itemName,
               game: goblinState.context.state,
             });
+
             const cooldownInProgress =
+              withdrawable &&
               mintCooldown({
                 cooldownSeconds: details?.cooldownSeconds,
                 mintedAt: details?.mintedAt,
               }) > 0;
+
             const locked = !withdrawable || cooldownInProgress;
 
             return (

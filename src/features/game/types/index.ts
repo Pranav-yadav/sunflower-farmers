@@ -5,6 +5,9 @@ export enum LimitedItemType {
   MarketItem = "MarketItem",
   BarnItem = "BarnItem",
   Flag = "Flag",
+  MOMEventItem = "MOMEventItem",
+  QuestItem = "QuestItem",
+  MutantChicken = "MutantChicken",
 }
 
 export const KNOWN_IDS: Record<InventoryItemName, number> = {
@@ -61,11 +64,27 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "Nyon Statue": 422,
   "Farmer Bath": 423,
   "Homeless Tent": 424,
+  "Mysterious Head": 425,
+  "Golden Bonsai": 426,
+  "Rock Golem": 427,
+  "Tunnel Mole": 428,
+  "Rocky the Mole": 429,
+  Nugget: 430,
 
   "Pumpkin Soup": 501,
   "Roasted Cauliflower": 502,
   Sauerkraut: 503,
   "Radish Pie": 504,
+  "Sunflower Cake": 505,
+  "Potato Cake": 506,
+  "Pumpkin Cake": 507,
+  "Carrot Cake": 508,
+  "Cabbage Cake": 509,
+  "Beetroot Cake": 510,
+  "Cauliflower Cake": 511,
+  "Parsnip Cake": 512,
+  "Radish Cake": 513,
+  "Wheat Cake": 514,
 
   Wood: 601,
   Stone: 602,
@@ -76,6 +95,10 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   Cow: 607,
   Pig: 608,
   Sheep: 609,
+  "Speed Chicken": 610,
+  "Fat Chicken": 611,
+  "Rich Chicken": 612,
+  Rooster: 613,
 
   "Green Thumb": 701,
   "Barn Manager": 702,
@@ -143,6 +166,12 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "Orange Egg": 907,
   "Green Egg": 908,
   "Easter Bunny": 909,
+  "Engine Core": 910,
+  Observatory: 911,
+  "Goblin Key": 912,
+  "Sunflower Key": 913,
+  "Ancient Goblin Sword": 914,
+  "Ancient Human Warhammer": 915,
 };
 
 // The reverse of above

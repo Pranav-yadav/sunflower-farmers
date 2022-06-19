@@ -28,6 +28,7 @@ export interface Craftable {
   name: CraftableName;
   description: string;
   price?: Decimal;
+  sellPrice?: Decimal;
   ingredients: Ingredient[];
   limit?: number;
   supply?: number;
@@ -35,8 +36,6 @@ export interface Craftable {
   requires?: InventoryItemName;
   section?: Section;
 }
-
-// NEW ===========
 
 export type Ingredient = {
   id?: number;
@@ -52,7 +51,14 @@ export interface CraftableItem {
   ingredients?: Ingredient[];
   disabled?: boolean;
   requires?: InventoryItemName;
+  /**
+   * When enabled, description and price will display as "?"
+   * This is to reduce people viewing placeholder development code and assuming that is the price/buff
+   */
+  isPlaceholder?: boolean;
 }
+
+export type MutantChicken = "Speed Chicken" | "Rich Chicken" | "Fat Chicken";
 
 export interface LimitedItem extends CraftableItem {
   maxSupply?: number;
@@ -61,6 +67,14 @@ export interface LimitedItem extends CraftableItem {
   mintedAt?: number;
   type?: LimitedItemType;
 }
+
+export type MOMEventItem = "Engine Core" | "Observatory";
+
+export type QuestItem =
+  | "Goblin Key"
+  | "Sunflower Key"
+  | "Ancient Goblin Sword"
+  | "Ancient Human Warhammer";
 
 export type BlacksmithItem =
   | "Sunflower Statue"
@@ -77,14 +91,20 @@ export type BlacksmithItem =
   | "Nyon Statue"
   | "Homeless Tent"
   | "Egg Basket"
-  | "Farmer Bath";
+  | "Farmer Bath"
+  | "Mysterious Head"
+  | "Tunnel Mole"
+  | "Rocky the Mole"
+  | "Nugget"
+  | "Rock Golem";
 
 export type BarnItem =
   | "Farm Cat"
   | "Farm Dog"
   | "Chicken Coop"
   | "Gold Egg"
-  | "Easter Bunny";
+  | "Easter Bunny"
+  | "Rooster";
 
 export type MarketItem =
   | "Nancy"
@@ -92,9 +112,17 @@ export type MarketItem =
   | "Kuebiko"
   | "Golden Cauliflower"
   | "Mysterious Parsnip"
-  | "Carrot Sword";
+  | "Carrot Sword"
+  | "Golden Bonsai";
 
-export type LimitedItemName = BlacksmithItem | BarnItem | MarketItem | Flag;
+export type LimitedItemName =
+  | BlacksmithItem
+  | BarnItem
+  | MarketItem
+  | Flag
+  | MOMEventItem
+  | QuestItem
+  | MutantChicken;
 
 export type Tool =
   | "Axe"
@@ -108,7 +136,20 @@ export type Food =
   | "Pumpkin Soup"
   | "Roasted Cauliflower"
   | "Sauerkraut"
-  | "Radish Pie";
+  | "Radish Pie"
+  | Cake;
+
+export type Cake =
+  | "Sunflower Cake"
+  | "Potato Cake"
+  | "Pumpkin Cake"
+  | "Carrot Cake"
+  | "Cabbage Cake"
+  | "Beetroot Cake"
+  | "Cauliflower Cake"
+  | "Parsnip Cake"
+  | "Radish Cake"
+  | "Wheat Cake";
 
 export type Animal = "Chicken" | "Cow" | "Pig" | "Sheep";
 
@@ -155,6 +196,206 @@ export const FOODS: () => Record<Food, CraftableItem> = () => ({
       {
         item: "Radish",
         amount: new Decimal(60),
+      },
+    ],
+  },
+  ...CAKES(),
+});
+
+export const CAKES: () => Record<Cake, Craftable> = () => ({
+  "Sunflower Cake": {
+    name: "Sunflower Cake",
+    description: "A ray of sunshine on your tastebuds",
+    tokenAmount: new Decimal(0),
+    sellPrice: marketRate(240),
+    ingredients: [
+      {
+        item: "Sunflower",
+        amount: new Decimal(200),
+      },
+      {
+        item: "Wheat",
+        amount: new Decimal(10),
+      },
+      {
+        item: "Egg",
+        amount: new Decimal(15),
+      },
+    ],
+  },
+  "Potato Cake": {
+    name: "Potato Cake",
+    description: "Soothe your body with this delicious treat",
+    tokenAmount: new Decimal(0),
+    sellPrice: marketRate(240),
+    ingredients: [
+      {
+        item: "Potato",
+        amount: new Decimal(500),
+      },
+      {
+        item: "Wheat",
+        amount: new Decimal(10),
+      },
+      {
+        item: "Egg",
+        amount: new Decimal(15),
+      },
+    ],
+  },
+  "Pumpkin Cake": {
+    name: "Pumpkin Cake",
+    description: "A treat for Goblins",
+    tokenAmount: new Decimal(0),
+    sellPrice: marketRate(240),
+    ingredients: [
+      {
+        item: "Pumpkin",
+        amount: new Decimal(130),
+      },
+      {
+        item: "Wheat",
+        amount: new Decimal(10),
+      },
+      {
+        item: "Egg",
+        amount: new Decimal(15),
+      },
+    ],
+  },
+  "Carrot Cake": {
+    name: "Carrot Cake",
+    description: "A rabbit's favourite",
+    tokenAmount: new Decimal(0),
+    sellPrice: marketRate(240),
+    ingredients: [
+      {
+        item: "Carrot",
+        amount: new Decimal(120),
+      },
+      {
+        item: "Wheat",
+        amount: new Decimal(10),
+      },
+      {
+        item: "Egg",
+        amount: new Decimal(15),
+      },
+    ],
+  },
+  "Cabbage Cake": {
+    name: "Cabbage Cake",
+    description: "An ancient human recipe",
+    tokenAmount: new Decimal(0),
+    sellPrice: marketRate(240),
+    ingredients: [
+      {
+        item: "Cabbage",
+        amount: new Decimal(90),
+      },
+      {
+        item: "Wheat",
+        amount: new Decimal(10),
+      },
+      {
+        item: "Egg",
+        amount: new Decimal(15),
+      },
+    ],
+  },
+  "Beetroot Cake": {
+    name: "Beetroot Cake",
+    description: "A romantic treat",
+    tokenAmount: new Decimal(0),
+    sellPrice: marketRate(300),
+    ingredients: [
+      {
+        item: "Beetroot",
+        amount: new Decimal(100),
+      },
+      {
+        item: "Wheat",
+        amount: new Decimal(10),
+      },
+      {
+        item: "Egg",
+        amount: new Decimal(15),
+      },
+    ],
+  },
+  "Cauliflower Cake": {
+    name: "Cauliflower Cake",
+    description: "Poisonous if baked for too long",
+    tokenAmount: new Decimal(0),
+    sellPrice: marketRate(300),
+    ingredients: [
+      {
+        item: "Cauliflower",
+        amount: new Decimal(60),
+      },
+      {
+        item: "Wheat",
+        amount: new Decimal(10),
+      },
+      {
+        item: "Egg",
+        amount: new Decimal(15),
+      },
+    ],
+  },
+  "Parsnip Cake": {
+    name: "Parsnip Cake",
+    description: "An ancient goblin recipe",
+    tokenAmount: new Decimal(0),
+    sellPrice: marketRate(300),
+    ingredients: [
+      {
+        item: "Parsnip",
+        amount: new Decimal(45),
+      },
+      {
+        item: "Wheat",
+        amount: new Decimal(10),
+      },
+      {
+        item: "Egg",
+        amount: new Decimal(15),
+      },
+    ],
+  },
+  "Radish Cake": {
+    name: "Radish Cake",
+    description: "A bitter cake loved by animals",
+    tokenAmount: new Decimal(0),
+    sellPrice: marketRate(300),
+    ingredients: [
+      {
+        item: "Radish",
+        amount: new Decimal(25),
+      },
+      {
+        item: "Wheat",
+        amount: new Decimal(10),
+      },
+      {
+        item: "Egg",
+        amount: new Decimal(15),
+      },
+    ],
+  },
+  "Wheat Cake": {
+    name: "Wheat Cake",
+    description: "The ultimate farmer treat",
+    tokenAmount: new Decimal(0),
+    sellPrice: marketRate(300),
+    ingredients: [
+      {
+        item: "Wheat",
+        amount: new Decimal(35),
+      },
+      {
+        item: "Egg",
+        amount: new Decimal(15),
       },
     ],
   },
@@ -238,6 +479,64 @@ export const TOOLS: Record<Tool, CraftableItem> = {
   },
 };
 
+export const QUEST_ITEMS: Record<QuestItem, LimitedItem> = {
+  "Goblin Key": {
+    name: "Goblin Key",
+    description: "The Goblin Key",
+    type: LimitedItemType.QuestItem,
+  },
+  "Sunflower Key": {
+    name: "Sunflower Key",
+    description: "The Sunflower Key",
+    type: LimitedItemType.QuestItem,
+  },
+  "Ancient Goblin Sword": {
+    name: "Ancient Goblin Sword",
+    description: "An Ancient Goblin Sword",
+    type: LimitedItemType.QuestItem,
+  },
+  "Ancient Human Warhammer": {
+    name: "Ancient Human Warhammer",
+    description: "An Ancient Human Warhammer",
+    type: LimitedItemType.QuestItem,
+  },
+};
+
+export const ROCKET_ITEMS: Record<MOMEventItem, LimitedItem> = {
+  "Engine Core": {
+    name: "Engine Core",
+    description: "The power of the sunflower",
+    type: LimitedItemType.MOMEventItem,
+  },
+  Observatory: {
+    name: "Observatory",
+    description: "Explore the stars and improve scientific development",
+    section: Section.Observatory,
+    type: LimitedItemType.MOMEventItem,
+  },
+};
+
+export const MUTANT_CHICKENS: Record<MutantChicken, LimitedItem> = {
+  "Speed Chicken": {
+    name: "Speed Chicken",
+    description: "Produces eggs 10% faster",
+    section: Section["Speed Chicken"],
+    type: LimitedItemType.MutantChicken,
+  },
+  "Fat Chicken": {
+    name: "Fat Chicken",
+    description: "10% less wheat needed to feed a chicken",
+    section: Section["Fat Chicken"],
+    type: LimitedItemType.MutantChicken,
+  },
+  "Rich Chicken": {
+    name: "Rich Chicken",
+    description: "Yields 10% more eggs",
+    section: Section["Rich Chicken"],
+    type: LimitedItemType.MutantChicken,
+  },
+};
+
 export const BLACKSMITH_ITEMS: Record<BlacksmithItem, LimitedItem> = {
   "Sunflower Statue": {
     name: "Sunflower Statue",
@@ -296,7 +595,7 @@ export const BLACKSMITH_ITEMS: Record<BlacksmithItem, LimitedItem> = {
   "Nyon Statue": {
     name: "Nyon Statue",
     description: "In memory of Nyon Lann",
-    // TODO: Add section
+    section: Section["Nyon Statue"],
     type: LimitedItemType.BlacksmithItem,
   },
   "Farmer Bath": {
@@ -326,6 +625,37 @@ export const BLACKSMITH_ITEMS: Record<BlacksmithItem, LimitedItem> = {
   "Egg Basket": {
     name: "Egg Basket",
     description: "Gives access to the Easter Egg Hunt",
+    type: LimitedItemType.BlacksmithItem,
+  },
+  "Mysterious Head": {
+    name: "Mysterious Head",
+    description: "A statue thought to protect farmers",
+    section: Section["Mysterious Head"],
+    type: LimitedItemType.BlacksmithItem,
+  },
+  "Tunnel Mole": {
+    name: "Tunnel Mole",
+    description: "Gives a 25% increase to stone mines",
+    section: Section.Mole,
+    type: LimitedItemType.BlacksmithItem,
+  },
+  "Rocky the Mole": {
+    name: "Rocky the Mole",
+    description: "Gives a 25% increase to iron mines",
+    section: Section.Mole,
+    type: LimitedItemType.BlacksmithItem,
+  },
+  Nugget: {
+    name: "Nugget",
+    description: "Gives a 999% increase to gold mines",
+    section: Section.Mole,
+    type: LimitedItemType.BlacksmithItem,
+    isPlaceholder: true,
+  },
+  "Rock Golem": {
+    name: "Rock Golem",
+    description: "Gives a 10% chance to get 3x stone",
+    section: Section["Rock Golem"],
     type: LimitedItemType.BlacksmithItem,
   },
 };
@@ -365,12 +695,19 @@ export const MARKET_ITEMS: Record<MarketItem, LimitedItem> = {
     description: "Increase chance of a mutant crop appearing",
     type: LimitedItemType.MarketItem,
   },
+  "Golden Bonsai": {
+    name: "Golden Bonsai",
+    description: "Goblins love bonsai too",
+    section: Section["Golden Bonsai"],
+    type: LimitedItemType.MarketItem,
+    isPlaceholder: true,
+  },
 };
 
 export const BARN_ITEMS: Record<BarnItem, LimitedItem> = {
   "Chicken Coop": {
     name: "Chicken Coop",
-    description: "Collect 3x the amount of eggs",
+    description: "Collect 2x the amount of eggs",
     section: Section["Chicken Coop"],
     type: LimitedItemType.BarnItem,
   },
@@ -397,15 +734,20 @@ export const BARN_ITEMS: Record<BarnItem, LimitedItem> = {
     section: Section["Easter Bunny"],
     type: LimitedItemType.BarnItem,
   },
+  Rooster: {
+    name: "Rooster",
+    description: "Doubles the chance of dropping a mutant chicken",
+    section: Section["Rooster"],
+    type: LimitedItemType.BarnItem,
+  },
 };
 
-export const ANIMALS: Record<Animal, CraftableItem> = {
+export const ANIMALS: () => Record<Animal, CraftableItem> = () => ({
   Chicken: {
     name: "Chicken",
     description: "Produces eggs. Requires wheat for feeding",
-    tokenAmount: new Decimal(5),
+    tokenAmount: marketRate(200),
     ingredients: [],
-    disabled: true,
   },
   Cow: {
     name: "Cow",
@@ -428,7 +770,7 @@ export const ANIMALS: Record<Animal, CraftableItem> = {
     ingredients: [],
     disabled: true,
   },
-};
+});
 
 type Craftables = Record<CraftableName, CraftableItem>;
 
@@ -439,8 +781,11 @@ export const CRAFTABLES: () => Craftables = () => ({
   ...MARKET_ITEMS,
   ...SEEDS(),
   ...FOODS(),
-  ...ANIMALS,
+  ...ANIMALS(),
   ...FLAGS,
+  ...ROCKET_ITEMS,
+  ...QUEST_ITEMS,
+  ...MUTANT_CHICKENS,
 });
 
 /**
@@ -455,6 +800,9 @@ export const LIMITED_ITEMS = {
   ...BARN_ITEMS,
   ...MARKET_ITEMS,
   ...FLAGS,
+  ...ROCKET_ITEMS,
+  ...QUEST_ITEMS,
+  ...MUTANT_CHICKENS,
 };
 
 export const LIMITED_ITEM_NAMES = getKeys(LIMITED_ITEMS);
@@ -499,6 +847,7 @@ export const makeLimitedItemsByName = (
         mintedAt,
         type: items[name].type,
         disabled: !enabled,
+        isPlaceholder: items[name].isPlaceholder,
       };
     }
 

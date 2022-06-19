@@ -13,6 +13,7 @@ import ironOre from "assets/resources/iron_ore.png";
 
 import { GRID_WIDTH_PX } from "features/game/lib/constants";
 import { Context } from "features/game/GameProvider";
+import { ToastContext } from "features/game/toast/ToastQueueProvider";
 import classNames from "classnames";
 import { useActor } from "@xstate/react";
 
@@ -50,11 +51,11 @@ export const Iron: React.FC<Props> = ({ rockIndex }) => {
 
   const [showRockTimeLeft, setShowRockTimeLeft] = useState(false);
 
-  const readonly = gameState.matches("readonly");
   const tool = "Stone Pickaxe";
   const rock = game.context.state.iron[rockIndex];
   // Users will need to refresh to chop the tree again
   const mined = !canMine(rock);
+  const { setToast } = useContext(ToastContext);
 
   // Reset the shake count when clicking outside of the component
   useEffect(() => {
@@ -92,12 +93,6 @@ export const Iron: React.FC<Props> = ({ rockIndex }) => {
 
   const shake = () => {
     const isPlaying = sparkGif.current?.getInfo("isPlaying");
-
-    if (readonly) {
-      miningAudio.play();
-      sparkGif.current?.goToAndPlay(0);
-      return;
-    }
 
     const stonepickAmount =
       game.context.state.inventory["Stone Pickaxe"] || new Decimal(0);
@@ -138,6 +133,11 @@ export const Iron: React.FC<Props> = ({ rockIndex }) => {
         </div>
       );
 
+      setToast({
+        icon: ironOre,
+        content: `+${rock.amount}`,
+      });
+
       await new Promise((res) => setTimeout(res, 2000));
       setCollecting(false);
     } catch (e: any) {
@@ -148,20 +148,14 @@ export const Iron: React.FC<Props> = ({ rockIndex }) => {
   };
 
   const handleHover = () => {
-    if (
-      readonly ||
-      (selectedItem === tool && game.context.state.inventory[tool]?.gte(1))
-    )
+    if (selectedItem === tool && game.context.state.inventory[tool]?.gte(1))
       return;
     containerRef.current?.classList["add"]("cursor-not-allowed");
     setShowLabel(true);
   };
 
   const handleMouseLeave = () => {
-    if (
-      readonly ||
-      (selectedItem === tool && game.context.state.inventory[tool]?.gte(1))
-    )
+    if (selectedItem === tool && game.context.state.inventory[tool]?.gte(1))
       return;
     containerRef.current?.classList["remove"]("cursor-not-allowed");
     setShowLabel(false);
