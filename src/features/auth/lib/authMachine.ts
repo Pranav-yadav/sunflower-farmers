@@ -24,6 +24,10 @@ const getDiscordCode = () => {
 const deleteFarmUrl = () =>
   window.history.pushState({}, "", window.location.pathname);
 
+const isPlayerOffline = () => {
+  return window.navigator.onLine ? false : true;
+};
+
 type Farm = {
   farmId: number;
   address: string;
@@ -53,6 +57,10 @@ type OfflineEvent = {
   type: "OFFLINE";
 };
 
+type OnlineEvent = {
+  type: "ONLINE";
+};
+
 type ExploreEvent = {
   type: "EXPLORE";
 };
@@ -80,6 +88,7 @@ type LoadFarmEvent = {
 export type BlockchainEvent =
   | StartEvent
   | OfflineEvent
+  | OnlineEvent
   | ExploreEvent
   | VisitEvent
   | ReturnEvent
@@ -106,7 +115,8 @@ export type BlockchainEvent =
 
 export type BlockchainState = {
   value:
-    | "offline"
+    | "isOffline"
+    | "isOnline"
     | "visiting"
     | "minimised"
     | "connecting"
@@ -153,11 +163,6 @@ export const authMachine = createMachine<
     initial: API_URL ? "connecting" : "connected",
     context: {},
     states: {
-      offline: {
-        on: {
-          //
-        },
-      },
       connecting: {
         id: "connecting",
         invoke: {
@@ -484,6 +489,18 @@ export const authMachine = createMachine<
             target: "connecting",
             actions: "resetFarm",
           },
+        },
+      },
+      isOffline: {
+        id: "isOffline",
+        on: {
+          ONLINE: { target: "isOnline" },
+        },
+      },
+      isOnline: {
+        id: "isOnline",
+        on: {
+          OFFLINE: { target: "isOffline" },
         },
       },
       minimised: {},
