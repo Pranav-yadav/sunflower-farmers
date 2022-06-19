@@ -49,6 +49,10 @@ type StartEvent = Farm & {
   screen: Screen;
 };
 
+type OfflineEvent = {
+  type: "OFFLINE";
+};
+
 type ExploreEvent = {
   type: "EXPLORE";
 };
@@ -75,6 +79,7 @@ type LoadFarmEvent = {
 
 export type BlockchainEvent =
   | StartEvent
+  | OfflineEvent
   | ExploreEvent
   | VisitEvent
   | ReturnEvent
@@ -101,6 +106,7 @@ export type BlockchainEvent =
 
 export type BlockchainState = {
   value:
+    | "offline"
     | "visiting"
     | "minimised"
     | "connecting"
@@ -147,6 +153,11 @@ export const authMachine = createMachine<
     initial: API_URL ? "connecting" : "connected",
     context: {},
     states: {
+      offline: {
+        on: {
+          //
+        },
+      },
       connecting: {
         id: "connecting",
         invoke: {
